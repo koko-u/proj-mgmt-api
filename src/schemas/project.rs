@@ -5,12 +5,13 @@ use serde::Deserialize;
 use serde::Serialize;
 
 use super::status::Status;
+use super::Owner;
 
 #[derive(Debug, Clone, Serialize, Deserialize, SimpleObject)]
 pub struct Project {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub _id: Option<ObjectId>,
-    pub owner_id: String,
+    pub owner: Owner,
     pub name: String,
     pub description: String,
     pub status: Status,

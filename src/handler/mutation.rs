@@ -33,9 +33,19 @@ impl Mutation {
         input: CreateProject,
     ) -> FieldResult<Project> {
         let db = context.data_unchecked::<DBMongo>();
+        let owner = db
+            .get_single_owner(&input.owner_id)
+            .await
+            .into_graphql_err()?;
+        let Some(owner) = owner else {
+            return Err(async_graphql::Error::new(format!(
+                "no owner(id {}) exists ",
+                input.owner_id
+            )));
+        };
         let new_project = Project {
             _id: None,
-            owner_id: input.owner_id,
+            owner,
             name: input.name,
             description: input.description,
             status: input.status,

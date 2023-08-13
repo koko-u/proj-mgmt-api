@@ -45,7 +45,7 @@ type Owner {
 
 type Project {
 	id: ObjectId
-	ownerId: String!
+	owner: Owner!
 	name: String!
 	description: String!
 	status: Status!
