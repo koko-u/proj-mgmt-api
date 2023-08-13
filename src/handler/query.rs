@@ -6,8 +6,9 @@ use async_graphql::Object;
 use crate::schemas::FetchOwner;
 use crate::schemas::FetchProject;
 use crate::schemas::Owner;
-use crate::DBMongo;
 use crate::schemas::Project;
+use crate::DBMongo;
+use crate::IntoGraphQLErr;
 
 #[derive(Debug)]
 pub struct Query;
@@ -17,7 +18,7 @@ impl Query {
     /// get the owner
     async fn owner(&self, context: &Context<'_>, input: FetchOwner) -> FieldResult<Owner> {
         let db = context.data_unchecked::<DBMongo>();
-        let owner = db.get_single_owner(&input._id).await?;
+        let owner = db.get_single_owner(&input._id).await.into_graphql_err()?;
         match owner {
             Some(owner) => Ok(owner),
             None => Err(Error::new(format!("owner id {} not found", input._id))),
@@ -27,15 +28,13 @@ impl Query {
     /// get all owners
     async fn get_owners(&self, context: &Context<'_>) -> FieldResult<Vec<Owner>> {
         let db = context.data_unchecked::<DBMongo>();
-        let owners = db.get_owners().await?;
-
-        Ok(owners)
+        db.get_owners().await.into_graphql_err()
     }
 
     /// get the project
     async fn project(&self, context: &Context<'_>, input: FetchProject) -> FieldResult<Project> {
         let db = context.data_unchecked::<DBMongo>();
-        let project = db.get_single_project(&input._id).await?;
+        let project = db.get_single_project(&input._id).await.into_graphql_err()?;
         match project {
             Some(project) => Ok(project),
             None => Err(Error::new(format!("project id {} not found", input._id))),
@@ -45,8 +44,6 @@ impl Query {
     /// get all projects
     async fn get_projects(&self, context: &Context<'_>) -> FieldResult<Vec<Project>> {
         let db = context.data_unchecked::<DBMongo>();
-        let projects = db.get_projects().await?;
-
-        Ok(projects)
+        db.get_projects().await.into_graphql_err()
     }
 }

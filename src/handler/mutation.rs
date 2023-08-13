@@ -7,6 +7,7 @@ use crate::schemas::CreateProject;
 use crate::schemas::Owner;
 use crate::schemas::Project;
 use crate::DBMongo;
+use crate::IntoGraphQLErr;
 
 #[derive(Debug)]
 pub struct Mutation;
@@ -22,9 +23,7 @@ impl Mutation {
             email: input.email,
             phone: input.phone,
         };
-        let owner = db.create_owner(new_owner).await?;
-
-        Ok(owner)
+        db.create_owner(new_owner).await.into_graphql_err()
     }
 
     /// create project
@@ -41,8 +40,6 @@ impl Mutation {
             description: input.description,
             status: input.status,
         };
-        let project = db.create_project(new_project).await?;
-
-        Ok(project)
+        db.create_project(new_project).await.into_graphql_err()
     }
 }

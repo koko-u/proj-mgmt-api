@@ -6,11 +6,11 @@ use actix_web::web;
 use actix_web::App;
 use actix_web::HttpServer;
 use env_logger::Env;
-use proj_mgmt_api::error::AppErr;
-use proj_mgmt_api::error::IntoAppErr;
 use proj_mgmt_api::handler::create_project_schema;
 use proj_mgmt_api::routes::graphql_routes;
+use proj_mgmt_api::AppErr;
 use proj_mgmt_api::DBMongo;
+use proj_mgmt_api::IntoAppErr;
 
 #[actix_web::main]
 async fn main() -> error_stack::Result<(), AppErr> {
@@ -24,13 +24,13 @@ async fn main() -> error_stack::Result<(), AppErr> {
 
     let db = DBMongo::init().await?;
     let schema = create_project_schema(db);
-    let app_data = web::Data::new(schema);
+    let data = web::Data::new(schema);
 
     HttpServer::new(move || {
         App::new()
             .wrap(middleware::Logger::default())
             .wrap(middleware::NormalizePath::trim())
-            .app_data(app_data.clone())
+            .app_data(data.clone())
             .configure(graphql_routes)
     })
     .bind(addr)
