@@ -1,0 +1,83 @@
+
+input CreateOwner {
+	name: String!
+	email: String!
+	phone: String!
+}
+
+input CreateProject {
+	ownerId: String!
+	name: String!
+	description: String!
+	status: Status!
+}
+
+input FetchOwner {
+	id: String!
+}
+
+input FetchProject {
+	id: String!
+}
+
+
+
+
+type Mutation {
+	"""
+	create owner
+	"""
+	createOwner(input: CreateOwner!): Owner!
+	"""
+	create project
+	"""
+	createProject(input: CreateProject!): Project!
+}
+
+scalar ObjectId
+
+type Owner {
+	id: ObjectId
+	name: String!
+	email: String!
+	phone: String!
+}
+
+type Project {
+	id: ObjectId
+	ownerId: String!
+	name: String!
+	description: String!
+	status: Status!
+}
+
+type Query {
+	"""
+	get the owner
+	"""
+	owner(input: FetchOwner!): Owner!
+	"""
+	get all owners
+	"""
+	getOwners: [Owner!]!
+	"""
+	get the project
+	"""
+	project(input: FetchProject!): Project!
+	"""
+	get all projects
+	"""
+	getProjects: [Project!]!
+}
+
+enum Status {
+	NOT_STARTED
+	IN_PROGRESS
+	COMPLETED
+}
+
+
+schema {
+	query: Query
+	mutation: Mutation
+}

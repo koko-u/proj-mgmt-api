@@ -1,4 +1,5 @@
 use std::env;
+use std::fs;
 use std::net;
 
 use actix_web::middleware;
@@ -14,6 +15,9 @@ use proj_mgmt_api::IntoAppErr;
 
 #[actix_web::main]
 async fn main() -> error_stack::Result<(), AppErr> {
+    let mut schema_file = env::current_dir().into_apperr()?;
+    schema_file.push("schema.graphql");
+
     if env::var("RUST_LOG").is_err() {
         env::set_var("RUST_LOG", "info");
     }
@@ -24,6 +28,8 @@ async fn main() -> error_stack::Result<(), AppErr> {
 
     let db = DBMongo::init().await?;
     let schema = create_project_schema(db);
+    fs::write(schema_file, schema.sdl()).into_apperr()?;
+
     let data = web::Data::new(schema);
 
     HttpServer::new(move || {
