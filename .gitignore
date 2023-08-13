@@ -1,6 +1,6 @@
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,clion+all,rust,rust-analyzer
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,clion+all,rust,rust-analyzer
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,rust-analyzer,rust,linux,clion+all,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,rust-analyzer,rust,linux,clion+all,dotenv
 
 ### CLion+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -90,6 +90,9 @@ fabric.properties
 !.idea/codeStyles
 !.idea/runConfigurations
 
+### dotenv ###
+.env
+
 ### Linux ###
 *~
 
@@ -145,7 +148,7 @@ rust-project.json
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,clion+all,rust,rust-analyzer
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,rust-analyzer,rust,linux,clion+all,dotenv
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
