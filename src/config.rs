@@ -1,1 +1,2 @@
 //! configurations
+pub mod mongo;

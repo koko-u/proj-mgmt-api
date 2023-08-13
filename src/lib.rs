@@ -1,3 +1,6 @@
 mod config;
-mod handler;
-mod schemas;
+pub mod error;
+pub mod handler;
+pub mod schemas;
+
+pub use config::mongo::DBMongo;
